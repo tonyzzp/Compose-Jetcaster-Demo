@@ -27,7 +27,7 @@ fun HomeScene() {
     val homeViewModel = remember { HomeViewModel(appState.feedRepository) }
     val homeState = homeViewModel.homeState.collectAsState().value
     val systemUiController = rememberSystemUiController()
-    systemUiController.setSystemBarsColor(Color.Transparent, true)
+    systemUiController.setSystemBarsColor(Color.Transparent, false)
     when (homeState) {
         is HomeState.HomeStateLoading -> {
             ContentLoading()

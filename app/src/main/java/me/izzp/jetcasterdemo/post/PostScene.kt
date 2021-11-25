@@ -113,7 +113,7 @@ private fun Body(
         Slider(
             value = 0f,
             onValueChange = {},
-            modifier = Modifier.fillMaxWidth().padding(8.dp)
+            modifier = Modifier.fillMaxWidth().padding(8.dp, 0.dp)
         )
         Row(
             modifier = Modifier.fillMaxWidth().padding(8.dp, 0.dp),
@@ -122,6 +122,8 @@ private fun Body(
             Text("0", color = matTheme.colors.onPrimary)
             Text(formatTime(post.audio!!.length), color = matTheme.colors.onPrimary)
         }
+        Spacer(Modifier.height(6.dp))
+
         Row(
             modifier = Modifier.fillMaxWidth().padding(8.dp, 0.dp),
             horizontalArrangement = Arrangement.SpaceAround,
