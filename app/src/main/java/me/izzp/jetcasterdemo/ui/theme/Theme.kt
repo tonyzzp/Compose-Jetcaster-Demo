@@ -21,7 +21,6 @@ import coil.request.ImageRequest
 import coil.size.Scale
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import me.izzp.jetcasterdemo.ComposableFunction
-import me.izzp.jetcasterdemo.ProvideSystemBars
 import kotlin.math.max
 import kotlin.math.min
 
@@ -84,24 +83,22 @@ fun AppTheme(
     CompositionLocalProvider(
         LocalIndication provides ripple,
     ) {
-        ProvideSystemBars {
-            val primary by animateColorAsState(primaryColor)
-            val text by animateColorAsState(onPrimaryColor)
-            val colors = lightColors(
-                primary = primary,
-                primaryVariant = primary,
-                onPrimary = text,
+        val primary by animateColorAsState(primaryColor)
+        val text by animateColorAsState(onPrimaryColor)
+        val colors = lightColors(
+            primary = primary,
+            primaryVariant = primary,
+            onPrimary = text,
+        )
+        MaterialTheme(
+            colors = colors,
+            content = content,
+            shapes = Shapes(
+                small = RoundedCornerShape(4.dp),
+                medium = RoundedCornerShape(8.dp),
+                large = RoundedCornerShape(16.dp),
             )
-            MaterialTheme(
-                colors = colors,
-                content = content,
-                shapes = Shapes(
-                    small = RoundedCornerShape(4.dp),
-                    medium = RoundedCornerShape(8.dp),
-                    large = RoundedCornerShape(16.dp),
-                )
-            )
-        }
+        )
     }
 }
 

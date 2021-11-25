@@ -6,12 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import coil.Coil
 import coil.ImageLoader
 import coil.util.CoilUtils
-import me.izzp.jetcasterdemo.home.HomeViewModel
 import me.izzp.jetcasterdemo.ui.theme.ColorState
 import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
@@ -35,9 +33,7 @@ class AppState(
         )
         .build()
 
-    val feedRepository = FeedRepository(context)
-
-    val homeViewModel = HomeViewModel(feedRepository)
+    val feedRepository = (context.applicationContext as App).feedRepository
 
     init {
         Coil.setImageLoader(imageLoader)
@@ -59,13 +55,12 @@ class AppState(
 @Composable
 fun rememberAppState(
     context: Context,
-    color: Color,
-    textColor: Color,
+    colorState: ColorState,
     navHostController: NavHostController,
 ) = remember {
     AppState(
         context = context,
-        colorState = ColorState(context, color, textColor),
+        colorState = colorState,
         navHostController = navHostController,
     )
 }

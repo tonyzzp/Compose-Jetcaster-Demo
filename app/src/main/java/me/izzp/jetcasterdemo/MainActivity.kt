@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavHostController
@@ -15,6 +16,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import me.izzp.jetcasterdemo.home.HomeScene
 import me.izzp.jetcasterdemo.post.PostScene
 import me.izzp.jetcasterdemo.ui.theme.AppTheme
+import me.izzp.jetcasterdemo.ui.theme.ColorState
 import me.izzp.jetcasterdemo.ui.theme.matTheme
 
 
@@ -23,22 +25,26 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
-            val navHostController = rememberNavController()
             val primaryColor = matTheme.colors.primary
             val textColor = matTheme.colors.onPrimary
+            val navHostController = rememberNavController()
+            val colorState = remember {
+                ColorState(this, primaryColor, textColor)
+            }
             rememberSystemUiController().setSystemBarsColor(Color.Transparent, false)
             val appState = rememberAppState(
                 context = this,
-                color = primaryColor,
-                textColor = textColor,
+                colorState = colorState,
                 navHostController = navHostController,
             )
-            AppTheme(
-                primaryColor = appState.colorState.color,
-                onPrimaryColor = appState.colorState.textColor,
-            ) {
+            ProvideSystemBars {
                 CompositionLocalProvider(LocalAppState provides appState) {
-                    Gate(appState.navHostController)
+                    AppTheme(
+                        primaryColor = appState.colorState.color,
+                        onPrimaryColor = appState.colorState.textColor,
+                    ) {
+                        Gate(appState.navHostController)
+                    }
                 }
             }
         }

@@ -27,7 +27,7 @@ val FEED_URLS = listOf(
 
 class FeedRepository(context: Context) {
 
-    private var feeds: List<Feed>? = null
+    private var cache: List<Feed>? = null
 
     private val okHttpClient by lazy {
         val cacheDir = File(context.cacheDir, "feed_cache")
@@ -65,7 +65,10 @@ class FeedRepository(context: Context) {
         feed
     }
 
-    suspend fun fetch() = withContext(Dispatchers.IO) {
+    suspend fun fetch(force: Boolean = false) = withContext(Dispatchers.IO) {
+        if (!force && cache != null) {
+            return@withContext cache!!
+        }
         val feeds = FEED_URLS.map { url ->
             async {
                 fetchFeed(url)
@@ -78,12 +81,12 @@ class FeedRepository(context: Context) {
             println(it)
         }
         val list = feeds.filterNotNull()
-        this@FeedRepository.feeds = list
+        cache = list
         list
     }
 
     fun getPost(postId: String): Post? {
-        feeds?.forEach { feed ->
+        cache?.forEach { feed ->
             feed.posts.forEach { post ->
                 if (post.postId == postId) {
                     return post

@@ -24,7 +24,8 @@ import me.izzp.jetcasterdemo.ui.theme.updateStatusBarColor
 @Composable
 fun HomeScene() {
     val appState = LocalAppState.current
-    val homeState = appState.homeViewModel.homeState.collectAsState().value
+    val homeViewModel = remember { HomeViewModel(appState.feedRepository) }
+    val homeState = homeViewModel.homeState.collectAsState().value
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(Color.Transparent, true)
     when (homeState) {
@@ -33,7 +34,7 @@ fun HomeScene() {
         }
         is HomeState.HomeStateFailed -> {
             ContentFailed {
-                appState.homeViewModel.reload()
+                homeViewModel.reload()
             }
         }
         is HomeState.HomeStateContent -> {
