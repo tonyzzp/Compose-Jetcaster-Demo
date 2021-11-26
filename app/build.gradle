@@ -19,9 +19,19 @@ android {
         }
     }
 
+    signingConfigs {
+        demo {
+            storeFile rootProject.file("demo.jks")
+            storePassword '12345678'
+            keyAlias 'key'
+            keyPassword '12345678'
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            signingConfig signingConfigs.demo
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

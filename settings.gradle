@@ -7,6 +7,8 @@ dependencyResolutionManagement {
         maven{
             url "https://maven.aliyun.com/repository/public"
         }
+        google()
+        mavenCentral()
     }
 }
 rootProject.name = "JetcasterDemo"
